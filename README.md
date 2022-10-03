@@ -98,4 +98,4 @@ methods
 ```
 
 ## Props
-- 공부
+- https://velog.io/@tobo/vue.js-Prop-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95
