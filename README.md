@@ -99,3 +99,6 @@ methods
 
 ## Props
 - https://velog.io/@tobo/vue.js-Prop-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95
+
+## Vuex
+- https://kdydesign.github.io/2019/05/09/vuex-tutorial/
