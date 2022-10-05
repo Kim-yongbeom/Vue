@@ -93,12 +93,33 @@ methods
 - beforeDestroy
 ```
 인스턴스가 소멸되기 직전에 호출되는 단계
-이벤트 리스너를 해체하거나 이벤트 버스를 off 하는 등 인스턴스가 사라지기 전에 해야할 일들을 처리하는 것이 좋다
-아직 인스턴스에 접근할 수 있기 때문에 뷰 인스턴스의 데이터를 삭제해야한다면 삭제할 수 있다.
+이벤트 리스너를 해체하거나 이벤트 버스를 off 하는 등 인스턴스가 사라지기 전에 해야할 일들을 처리하는 것이 좋음
+아직 인스턴스에 접근할 수 있기 때문에 뷰 인스턴스의 데이터를 삭제해야한다면 삭제 가능
 ```
 
 ## Props
 - https://velog.io/@tobo/vue.js-Prop-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95
 
 ## Vuex
-- https://kdydesign.github.io/2019/05/09/vuex-tutorial/
+- state
+```
+Vue 컴포넌트에서 data로 볼 수 있음
+직접적인 변경은 불가능하고 mutation을 통해서 변경이 가능
+```
+- mutations
+```
+state를 변경하는 유일한 방법
+mutation은 함수로 구현되며 첫 번째 인자는 state를 받을 수 있으며, 두번째 인자는 payload를 받을 수 있음
+payload는 여러 필드를 포함할 수 있는 객체 형태도 가능
+Hepler를 사용하지 않는 경우는
+commit을 통해서만 호출함
+```
+- actions
+```
+mutation과 달리 비동기 작업이 가능
+commit이 가능하여 action에서도 mutation을 통해 state를 변경
+action에서는 첫 번째 인자를 context 인자로 받을 수 있으며
+이 context에는 state, commit, dispatch, rootstate와 같은 속성들을 포함
+두 번째 인자는 mutation과 동일하게 payload로 받음
+action은 dispatch를 통해 호출한다.
+```
