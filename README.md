@@ -22,6 +22,20 @@ template-name 종류
 4. 인스턴스가 소멸 (destory)
 ```
 
+## vue 템플릿 문법
+```
+1. v-on:click="매핑되는 메서드 명": 클릭을 할 때 실행되는 메서드와 매핑시켜준다
+2. v-on:keyup.enter="addTodo": 마우스 클릭이 아닌 enter 키를 통해서 입력가능
+3. v-bind:key="xxxx": 뷰 인스턴스의 데이터 속성을 해당 HTML 요소에 연결
+4. v-model="xxxx": v-bind & v-on을 합쳐놓은것
+5. v-for="(todoItem,index) in todoItems", v-bind:key="todoItem.item": 연결된 뷰 데이터를 
+for문으로 돌릴 수 있다. todoItem만 넣고 돌려도됨, 인덱스를 추가하면 자동으로 인덱스 매겨줌,
+이때 v-bindLkey="xxx" 여기는 유니크한 String or 숫자만 가능
+6. v-bind:class="{적용할 css: 특정값}": 특정 값의 true, false 여부에 따라서 css를 적용할 수 있다.
+7. v-bind: 내려보낼 프롭스 속성 이름="현재 위치의 컴포넌트 데이터 속성"
+8. v-on:하위 컴포넌트에서 발생시킨 이벤트 이름="현재 컴포넌트의 메서드 명": emit을 받을 때
+```
+
 ## component 데이터 관리
 - name
 ```

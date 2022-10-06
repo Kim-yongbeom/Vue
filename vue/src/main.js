@@ -1,8 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  el: "#app",
+  data: {
+    // 사용할 데이터
+  },
+  methods: {
+    // 사용할 메서드
+  },
+});
