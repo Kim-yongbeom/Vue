@@ -1,5 +1,14 @@
 <template>
-  <div id="app-3">
-    <span v-if="seen">Now you see me</span>
-  </div>
+  <BoardTable></BoardTable>
 </template>
+
+<script>
+import BoardTable from './components/BoardTable.vue';
+
+export default {
+  name: 'App',
+  components: {
+    BoardTable,
+  },
+};
+</script>

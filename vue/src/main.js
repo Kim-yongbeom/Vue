@@ -1,13 +1,10 @@
-import Vue from "vue";
+import Vue from 'vue'
+import App from './App.vue'
+import vuetify from './plugins/vuetify'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 new Vue({
-  el: "#app",
-  data: {
-    // 사용할 데이터
-  },
-  methods: {
-    // 사용할 메서드
-  },
-});
+  vuetify,
+  render: h => h(App)
+}).$mount('#app')
