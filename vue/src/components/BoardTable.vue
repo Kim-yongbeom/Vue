@@ -16,8 +16,28 @@
         :headers="headers"
         :items="desserts"
         :items-per-page="5"
+        :expanded.sync="expanded"
+        show-expand
         class="elevation-1"
-        ></v-data-table>
+        item-key="name"
+        >
+        <template v-slot:expanded-item="{ headers }">
+          <td :colspan="headers.length">
+            <table>
+              <thead>
+                <th>
+                  ddd
+                </th>
+              </thead>
+              <tbody>
+                <tr>
+                  jkjkjk
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </template>
+      </v-data-table>
     </div>
 </template>
 <script>
@@ -38,6 +58,7 @@
             { text: 'Protein (g)', value: 'protein' },
             { text: 'Iron (%)', value: 'iron' },
           ],
+          expanded: [],
           desserts: [
             {
               name: 'Frozen Yogurt',
