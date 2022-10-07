@@ -3,7 +3,7 @@
 ## Vue 설치
 - npm install vue
 - npm install -g @vue/cli
-- vue init <template-name> <project-name>(vue init webpack my-project)
+- vue create 프로젝트명
 ```
 template-name 종류
 1. webpack: webpack 빌드 도구와 vue-loader를 이용하는 옵션으로 linter, router, css preprocessing, 단위 테스트 도구들을 선택적으로 사용 가능
