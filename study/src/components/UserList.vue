@@ -1,7 +1,7 @@
 <template>
-  <div>
-    asdasdasd
-  </div>
+  <v-app>
+    유저리스트
+  </v-app>
 </template>
 
 <script>
