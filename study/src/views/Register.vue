@@ -113,6 +113,7 @@ export default {
     },
     submit () {
       this.$refs.observer.validate()
+      this.$router.push('/login')
     },
     clear () {
       this.name = ''
