@@ -50,6 +50,7 @@
           class="mr-4"
           type="submit"
           :disabled="invalid"
+          @click="userSave"
         >
           submit
         </v-btn>
@@ -92,17 +93,24 @@ extend('email', {
 })
 
 export default {
+  name: "register",
   components: {
     ValidationProvider,
     ValidationObserver,
   },
   data: () => ({
-    name: '',
     email: '',
+    name: '',
     password: '',
   }),
-
   methods: {
+    userSave() {
+      if(localStorage.getItem(this.email)){
+        alert('이미 존재하는 이메일입니다!')
+      }else{
+        localStorage.setItem(this.email, JSON.stringify({name: this.name, password: this.password}))
+      }
+    },
     submit () {
       this.$refs.observer.validate()
     },
