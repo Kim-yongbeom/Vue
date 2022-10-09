@@ -1,10 +1,12 @@
 <template>
   <v-app>
+    <router-link to="/">홈</router-link>
+    <router-link to="/userList">유저리스트</router-link>
+    <router-link to="/register">회원가입</router-link>
+    <router-link to="/login">로그인</router-link>
     <v-app>
-      <router-view name="home"></router-view>
-      <router-view name="userList"></router-view>
+      <router-view name="select"></router-view>
     </v-app>
-    <router-view/>
   </v-app>
 </template>
 
