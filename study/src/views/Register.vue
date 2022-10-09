@@ -104,7 +104,7 @@ extend('regex', {
 
 extend('email', {
   ...email,
-  message: 'Email must be valid',
+  message: '이메일 형식이 아닙니다.',
 })
 
 export default {
