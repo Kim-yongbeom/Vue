@@ -23,7 +23,7 @@
         <validation-provider
           v-slot="{ errors }"
           name="Password"
-          rules="required|max:20|min:6"
+          rules="required"
         >
           <v-text-field
             type="password"
@@ -39,7 +39,6 @@
           class="mr-4"
           type="submit"
           :disabled="invalid"
-          @click="userSave"
         >
           로그인
         </v-btn>
@@ -48,7 +47,7 @@
   </template>
   
 <script>
-import { required, email, max, min, regex } from 'vee-validate/dist/rules'
+import { required, email, regex } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 
 setInteractionMode('eager')
@@ -58,16 +57,6 @@ extend('required', {
   message: '{_field_}은 반드시 입력해야 합니다.',
 })
 
-extend('max', {
-  ...max,
-  message: '{_field_}은 {length}글자 이하여야 합니다.',
-})
-
-extend('min', {
-  ...min,
-  message: '{_field_}은 {length}글자 이상이여야 합니다.',
-})
-
 extend('regex', {
   ...regex,
   message: '{_field_} {_value_} does not match {regex}',
@@ -75,31 +64,32 @@ extend('regex', {
 
 extend('email', {
   ...email,
-  message: 'Email must be valid',
+  message: '이메일 형식이 아닙니다.',
 })
 
 export default {
-  name: "register",
+  name: "login",
   components: {
     ValidationProvider,
     ValidationObserver,
   },
   data: () => ({
     email: '',
-    name: '',
     password: '',
   }),
   methods: {
-    userSave() {
-      if(localStorage.getItem(this.email)){
-        alert('이미 존재하는 이메일입니다!')
-      }else{
-        localStorage.setItem(this.email, JSON.stringify({name: this.name, password: this.password}))
-      }
-    },
     submit () {
       this.$refs.observer.validate()
-      this.$router.push('/')
+      for (let i=0; i<localStorage.length; i++){
+        if(localStorage.key(i) === this.email){
+          localStorage.setItem('token', 123)
+          this.$router.push('/')
+          location.reload();
+          break
+        }else if(i===localStorage.length-1 && localStorage.key(i)!==this.email){
+          alert('아이디 또는 비밀번호가 잘못되었습니다.')
+        }
+      }
     },
   },
 }
