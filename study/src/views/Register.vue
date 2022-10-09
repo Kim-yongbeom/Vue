@@ -3,6 +3,9 @@
       ref="observer"
       v-slot="{ invalid }"
     >
+        <h1>
+            회원가입 페이지
+        </h1>
       <form @submit.prevent="submit">
         <validation-provider
           v-slot="{ errors }"
@@ -46,16 +49,28 @@
           ></v-text-field>
         </validation-provider>
 
+        <validation-provider
+        v-slot="{ errors }"
+        name="select"
+        rules="required"
+      >
+        <v-select
+          v-model="select"
+          :items="items"
+          :error-messages="errors"
+          label="Select"
+          data-vv-name="select"
+          required
+        ></v-select>
+      </validation-provider>
+
         <v-btn
           class="mr-4"
           type="submit"
           :disabled="invalid"
           @click="userSave"
         >
-          submit
-        </v-btn>
-        <v-btn @click="clear">
-          clear
+          회원가입
         </v-btn>
       </form>
     </validation-observer>
@@ -102,24 +117,25 @@ export default {
     email: '',
     name: '',
     password: '',
+    select: null,
+    items: [
+      '신입',
+      '대리',
+      '과장',
+      '팀장',
+    ],
   }),
   methods: {
     userSave() {
       if(localStorage.getItem(this.email)){
         alert('이미 존재하는 이메일입니다!')
       }else{
-        localStorage.setItem(this.email, JSON.stringify({name: this.name, password: this.password}))
+        localStorage.setItem(this.email, JSON.stringify({name: this.name, password: this.password, grade: this.select}))
       }
     },
     submit () {
       this.$refs.observer.validate()
       this.$router.push('/login')
-    },
-    clear () {
-      this.name = ''
-      this.email = ''
-      this.password = ''
-      this.$refs.observer.reset()
     },
   },
 }
