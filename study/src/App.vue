@@ -19,10 +19,14 @@
 
 export default {
   name: 'App',
-  data: () => ({
-    token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
-  }),
-  methods: {
+  data (){
+    return {
+      get token() {
+        return localStorage.getItem('token') || 0;
+      },
+    }
+  },
+  methods: { 
     logout(){
       localStorage.removeItem('token')
     }

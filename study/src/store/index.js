@@ -15,11 +15,14 @@ for(let i=0; i<localStorage.length; i++){
 export default new Vuex.Store({
     // data
     state: {
-        user: info
+        user: info,
+        name: ''
     },
     // data를 바꿀때 사용
     mutations: {
-
+        USER_EMAIL(state, payload){
+            state.name = payload.email
+        }
     },
     // method
     actions: {

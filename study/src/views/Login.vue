@@ -81,12 +81,15 @@ export default {
     submit () {
       this.$refs.observer.validate()
       for (let i=0; i<localStorage.length; i++){
-        if(localStorage.key(i) === this.email){
+        if(localStorage.key(i) === this.email && JSON.parse(localStorage.getItem(localStorage.key(i))).password === this.password){
           localStorage.setItem('token', 123)
+          this.$store.commit('USER_EMAIL', {
+            email: this.email
+          })
           this.$router.push('/')
-          location.reload();
           break
-        }else if(i===localStorage.length-1 && localStorage.key(i)!==this.email){
+        }else if((i===localStorage.length-1 && localStorage.key(i)!==this.email) 
+        || (i===localStorage.length-1 && JSON.parse(localStorage.getItem(localStorage.key(i))).password !== this.password)){
           alert('아이디 또는 비밀번호가 잘못되었습니다.')
         }
       }
