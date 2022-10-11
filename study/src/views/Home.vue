@@ -1,7 +1,7 @@
 <template>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="board"
       sort-by="calories"
       class="elevation-1"
     >
@@ -27,8 +27,10 @@
                 class="mb-2"
                 v-bind="attrs"
                 v-on="on"
+                v-if="token"
+                @click="newData"
               >
-                글쓰기
+                등록
               </v-btn>
             </template>
             <v-card>
@@ -45,8 +47,39 @@
                       md="4"
                     >
                       <v-text-field
+                        v-model="editedItem.no"
+                        label="게시글 번호"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
                         v-model="editedItem.title"
                         label="게시글 제목"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="작성자"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                      
+                    >
+                      <v-text-field
+                        v-model="editedItem.date"
+                        label="게시글 날짜"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -74,7 +107,7 @@
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+              <v-card-title class="text-h5">삭제하시겠습니까?</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -107,6 +140,8 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    newWrite: false,
+    token: localStorage.getItem('token'),
     headers: [
       {
         text: '번호',
@@ -114,25 +149,42 @@ export default {
         value: 'no',
       },
       { text: '제목', value: 'title' },
-      { text: '작성자', value: 'writer' },
+      { text: '작성자', value: 'name' },
       { text: '작성일', value: 'date' },
+      { text: localStorage.getItem('token') ? 'Actions' : '', value: localStorage.getItem('token') ? 'actions' : '', sortable: false },
     ],
-    desserts: [],
+    board: JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [],
+    // desserts: [{
+    //   no: 0,
+    //   title: 123, 
+    //   writer: "aaa",
+    //   date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate(),
+    // }],
     editedIndex: -1,
+
+    // 이 부분이 글쓰기, 수정할 때 데이터 받는곳인듯
     editedItem: {
-      title: '',
+      no: 10,
+      title: '23',
+      name: '23',
+      date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
+
+
     defaultItem: {
-      title: '',
+      no: 0,
+      title: '0',
+      name: '0',
+      date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
   }),
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? '글쓰기' : '수정'
+      return this.editedIndex === -1 ? '등록' : '수정'
     },
     writer(){
-        return this.$store.state.name
+      return this.$store.state.name
     }
   },
 
@@ -148,19 +200,21 @@ export default {
   methods: {
 
     editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.board.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.board.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
+      let deleteList = JSON.parse(localStorage.getItem('board'))
+      deleteList.splice(this.editedIndex, 1)
+      localStorage.setItem('board', JSON.stringify(deleteList))
       this.closeDelete()
     },
 
@@ -180,11 +234,19 @@ export default {
       })
     },
 
+    newData () {
+      this.newWrite = true
+    },
+
     save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
+      if(this.newWrite){
+        let list = JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [];
+        list.push({no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
+        localStorage.setItem('board', JSON.stringify(list));
+      } else{
+        let editList = JSON.parse(localStorage.getItem('board'))
+        editList.splice(this.editedIndex, 1, {no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
+        localStorage.setItem('board', JSON.stringify(editList))
       }
       this.close()
     },

@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <router-link to="/">홈</router-link>
-    <router-link to="/userList">유저리스트</router-link>
     <template v-if="token">
+      <router-link to="/userList">유저리스트</router-link>
       <a href="/" @click="logout">로그아웃</a>
     </template>
     <template v-else>
@@ -29,6 +29,7 @@ export default {
   methods: { 
     logout(){
       localStorage.removeItem('token')
+      localStorage.removeItem('vuex')
     }
   }
 };

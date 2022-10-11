@@ -124,6 +124,7 @@ export default {
       '과장',
       '팀장',
     ],
+    info: [],
   }),
   methods: {
     userSave() {

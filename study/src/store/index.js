@@ -1,35 +1,31 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+
+// import SecureLS from "secure-ls";
+
+// new SecureLS({ isCompression: false });
 
 Vue.use(Vuex);
 
-let info = [];
-
-for(let i=0; i<localStorage.length; i++){
-    if(localStorage.key(i)=='token'){
-        continue
-    }
-    info.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
-}
-
 export default new Vuex.Store({
-    // data
-    state: {
-        user: info,
-        name: ''
+  plugins: [createPersistedState()],
+  // data
+  state: {
+    user: [],
+    name: "",
+  },
+  // data를 바꿀때 사용
+  mutations: {
+    USER_EMAIL(state, payload) {
+      state.name = payload.email;
     },
-    // data를 바꿀때 사용
-    mutations: {
-        USER_EMAIL(state, payload){
-            state.name = payload.email
-        }
+    USER_LIST(state, payload) {
+      state.user = payload.list;
     },
-    // method
-    actions: {
-
-    },
-    // computed
-    getters: {
-
-    }
-})
+  },
+  // method
+  actions: {},
+  // computed
+  getters: {},
+});

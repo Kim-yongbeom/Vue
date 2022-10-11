@@ -76,6 +76,7 @@ export default {
   data: () => ({
     email: '',
     password: '',
+    info: [],
   }),
   methods: {
     submit () {
@@ -83,8 +84,17 @@ export default {
       for (let i=0; i<localStorage.length; i++){
         if(localStorage.key(i) === this.email && JSON.parse(localStorage.getItem(localStorage.key(i))).password === this.password){
           localStorage.setItem('token', 123)
+          for (let i = 0; i < localStorage.length; i++) {
+            if (localStorage.key(i) == "token" || localStorage.key(i) == 'board' || localStorage.key(i) == "loglevel:webpack-dev-server") {
+              continue;
+            }
+            this.info.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+          }
           this.$store.commit('USER_EMAIL', {
             email: this.email
+          })
+          this.$store.commit('USER_LIST', {
+            list: this.info
           })
           this.$router.push('/')
           break
