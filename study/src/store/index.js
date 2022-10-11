@@ -4,7 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 
 // import SecureLS from "secure-ls";
 
-// new SecureLS({ isCompression: false });
+// let ls = new SecureLS();
 
 Vue.use(Vuex);
 

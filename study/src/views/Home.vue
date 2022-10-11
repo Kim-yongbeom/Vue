@@ -68,6 +68,7 @@
                     >
                       <v-text-field
                         v-model="editedItem.name"
+                        disabled
                         label="작성자"
                       ></v-text-field>
                     </v-col>
@@ -79,6 +80,7 @@
                     >
                       <v-text-field
                         v-model="editedItem.date"
+                        disabled
                         label="게시글 날짜"
                       ></v-text-field>
                     </v-col>
@@ -151,7 +153,7 @@ export default {
       { text: '제목', value: 'title' },
       { text: '작성자', value: 'name' },
       { text: '작성일', value: 'date' },
-      { text: localStorage.getItem('token') ? 'Actions' : '', value: localStorage.getItem('token') ? 'actions' : '', sortable: false },
+      { text: localStorage.getItem('token') ? '수정/삭제' : '', value: localStorage.getItem('token') ? 'actions' : '', sortable: false },
     ],
     board: JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [],
     // desserts: [{
@@ -164,9 +166,9 @@ export default {
 
     // 이 부분이 글쓰기, 수정할 때 데이터 받는곳인듯
     editedItem: {
-      no: 10,
+      no: 0,
       title: '23',
-      name: '23',
+      name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
 
@@ -174,7 +176,7 @@ export default {
     defaultItem: {
       no: 0,
       title: '0',
-      name: '0',
+      name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
   }),
@@ -215,6 +217,7 @@ export default {
       let deleteList = JSON.parse(localStorage.getItem('board'))
       deleteList.splice(this.editedIndex, 1)
       localStorage.setItem('board', JSON.stringify(deleteList))
+      location.reload()
       this.closeDelete()
     },
 
@@ -248,6 +251,7 @@ export default {
         editList.splice(this.editedIndex, 1, {no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
         localStorage.setItem('board', JSON.stringify(editList))
       }
+      location.reload()
       this.close()
     },
   },
