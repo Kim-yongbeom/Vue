@@ -144,6 +144,7 @@ export default {
     dialogDelete: false,
     newWrite: false,
     token: localStorage.getItem('token'),
+    test: '원래 데이터',
     headers: [
       {
         text: '번호',
@@ -155,19 +156,12 @@ export default {
       { text: '작성일', value: 'date' },
       { text: localStorage.getItem('token') ? '수정/삭제' : '', value: localStorage.getItem('token') ? 'actions' : '', sortable: false },
     ],
-    board: JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [],
-    // desserts: [{
-    //   no: 0,
-    //   title: 123, 
-    //   writer: "aaa",
-    //   date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate(),
-    // }],
+    board: [],
     editedIndex: -1,
-
-    // 이 부분이 글쓰기, 수정할 때 데이터 받는곳인듯
+    destroyDataAfter: '바뀐 후',
     editedItem: {
       no: 0,
-      title: '23',
+      title: '',
       name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
@@ -175,11 +169,15 @@ export default {
 
     defaultItem: {
       no: 0,
-      title: '0',
+      title: '',
       name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
   }),
+
+  mounted(){
+    this.board = JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : []
+  },
 
   computed: {
     formTitle () {
@@ -196,7 +194,7 @@ export default {
     },
     dialogDelete (val) {
       val || this.closeDelete()
-    },
+    }
   },
 
   methods: {
@@ -217,7 +215,7 @@ export default {
       let deleteList = JSON.parse(localStorage.getItem('board'))
       deleteList.splice(this.editedIndex, 1)
       localStorage.setItem('board', JSON.stringify(deleteList))
-      location.reload()
+      this.board = JSON.parse(localStorage.getItem('board'))
       this.closeDelete()
     },
 
@@ -246,14 +244,20 @@ export default {
         let list = JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [];
         list.push({no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
         localStorage.setItem('board', JSON.stringify(list));
+        this.board = JSON.parse(localStorage.getItem('board'))
       } else{
         let editList = JSON.parse(localStorage.getItem('board'))
         editList.splice(this.editedIndex, 1, {no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
         localStorage.setItem('board', JSON.stringify(editList))
+        this.board = JSON.parse(localStorage.getItem('board'))
       }
-      location.reload()
       this.close()
     },
   },
+  beforeDestroy(){
+    this.$store.commit('DESTROYDATA',{
+      destroyData: this.destroyDataAfter
+    })
+  }
 }
 </script>

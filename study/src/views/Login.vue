@@ -85,7 +85,7 @@ export default {
         if(localStorage.key(i) === this.email && JSON.parse(localStorage.getItem(localStorage.key(i))).password === this.password){
           localStorage.setItem('token', 123)
           for (let i = 0; i < localStorage.length; i++) {
-            if (localStorage.key(i) == "token" || localStorage.key(i) == 'board' || localStorage.key(i) == "loglevel:webpack-dev-server") {
+            if (localStorage.key(i) == "token" || localStorage.key(i) == 'board' || localStorage.key(i) == "loglevel:webpack-dev-server" || localStorage.key(i) == "vuex") {
               continue;
             }
             this.info.push(JSON.parse(localStorage.getItem(localStorage.key(i))));

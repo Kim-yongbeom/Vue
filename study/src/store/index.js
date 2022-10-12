@@ -23,6 +23,7 @@ export default new Vuex.Store({
   state: {
     user: [],
     name: "",
+    destroyData: "",
   },
   // data를 바꿀때 사용
   mutations: {
@@ -31,6 +32,14 @@ export default new Vuex.Store({
     },
     USER_LIST(state, payload) {
       state.user = payload.list;
+    },
+    LOGOUT(state, payload) {
+      state.name = payload.name;
+      state.user = payload.user;
+    },
+    DESTROYDATA(state, payload) {
+      state.destroyData = payload.destroyData;
+      console.log(state.destroyData);
     },
   },
   // method
