@@ -12,17 +12,19 @@
             >
             </v-data-table>
             <div id="page">
-                <button @click="minus" class="minus">-</button>
+                <button @click="minus(infos)" class="minus">-</button>
                     {{currentPage}} / {{totalPage}}
-                <button @click="plus" class="plus">+</button>
+                <button @click="plus(infos)" class="plus">+</button>
             </div>
         </template>
     </div>
 </template>
 <script>
+import page from "@/mixins/page.js"
 
 export default {
     name: "userList",
+    mixins: [page],
     data () {
       return {
         headers: [
@@ -30,59 +32,12 @@ export default {
           { text: '직책', value: 'grade' },
         ],
         destroyDataAfter: '바뀌기 전',
-        currentPage: 1,
-        currentCount: 0,
-        count: 5,
-        totalPage: 0,
-        pageData: [],
-        clickLeft: false,
-        clickRight: false,
       }
     },
+
     created() {
-        this.totalPageCount()
-        this.currentPageData()
-    },
-    methods: {
-        totalPageCount(){
-            if(this.infos.length % this.count > 0){
-                this.totalPage = Math.floor(this.infos.length/this.count) + 1
-            } else{
-                this.totalPage = Math.floor(this.infos.length/this.count)
-            }
-        },
-
-        currentPageData(){
-            this.pageData = this.infos.slice(this.currentCount, this.currentCount+this.count)
-            this.currentCount += this.count
-        },
-
-        minus(){
-            if(this.currentPage > 1){
-                this.currentPage -= 1 
-                this.currentCount -= this.count
-                this.clickLeft = true
-                if(this.clickRight){
-                    this.clickRight = false
-                    this.currentCount -= this.count
-                }
-                this.pageData = this.infos.slice(this.currentCount, this.currentCount+this.count)
-            }
-        },
-
-        plus(){
-            if(this.currentPage < this.totalPage){
-                this.currentPage += 1
-                this.currentCount += this.count
-                this.clickRight = true
-                if(this.clickLeft){
-                    this.clickLeft = false
-                    this.currentCount += this.count
-                }
-                this.pageData = this.infos.slice(this.currentCount-this.count, this.currentCount)
-                
-            }
-        }
+        this.totalPageCount(this.infos)
+        this.currentPageData(this.infos)
     },
 
     computed: {

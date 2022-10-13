@@ -1,9 +1,10 @@
 <template>
+<div>
     <v-data-table
       :headers="headers"
-      :items="board"
-      sort-by="calories"
+      :items="pageData"
       class="elevation-1"
+      hide-default-footer
     >
       <template v-slot:top>
         <v-toolbar
@@ -136,9 +137,18 @@
         </v-icon>
       </template>
     </v-data-table>
+    <div id="page">
+      <button @click="minus(board)" class="minus">-</button>
+          {{currentPage}} / {{totalPage}}
+      <button @click="plus(board)" class="plus">+</button>
+    </div>
+  </div>
   </template>
 <script>
+import page from "@/mixins/page.js"
+
 export default {
+  mixins: [page],
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -162,7 +172,7 @@ export default {
     editedItem: {
       no: 0,
       title: '',
-      name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
+      name: '',
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
 
@@ -170,13 +180,19 @@ export default {
     defaultItem: {
       no: 0,
       title: '',
-      name: JSON.parse(localStorage.getItem(localStorage.key('writer'))).name,
+      name: '',
       date: new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
     },
   }),
 
-  mounted(){
+  created(){
     this.board = JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : []
+    this.totalPageCount(this.board)
+    this.currentPageData(this.board)
+    if(this.writer){
+      this.editedItem.name = JSON.parse(localStorage.getItem(this.writer)).name
+      this.defaultItem.name = JSON.parse(localStorage.getItem(this.writer)).name
+    }
   },
 
   computed: {
@@ -216,6 +232,8 @@ export default {
       deleteList.splice(this.editedIndex, 1)
       localStorage.setItem('board', JSON.stringify(deleteList))
       this.board = JSON.parse(localStorage.getItem('board'))
+      this.totalPageCount(this.board)
+      this.currentData(this.board)
       this.closeDelete()
     },
 
@@ -241,15 +259,23 @@ export default {
 
     save () {
       if(this.newWrite){
+        this.newWrite = false
         let list = JSON.parse(localStorage.getItem('board')) ? JSON.parse(localStorage.getItem('board')) : [];
         list.push({no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
         localStorage.setItem('board', JSON.stringify(list));
         this.board = JSON.parse(localStorage.getItem('board'))
+
+        this.currentData(this.board)
+
+        this.totalPageCount(this.board)
       } else{
         let editList = JSON.parse(localStorage.getItem('board'))
         editList.splice(this.editedIndex, 1, {no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
         localStorage.setItem('board', JSON.stringify(editList))
         this.board = JSON.parse(localStorage.getItem('board'))
+
+        this.currentData(this.board)
+
       }
       this.close()
     },
@@ -261,3 +287,29 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  #page{
+    text-align: center;
+  }
+  .minus{
+    width: 30px;
+    color: white;
+    border-radius: 10px;
+    background-color: black;
+    margin: 20px 0;
+  }
+  .minus:hover{
+    background-color: green;
+  }
+  .plus{
+    width: 30px;
+    color: white;
+    border-radius: 10px;
+    background-color: black;
+    margin: 20px 0;
+  }
+  .plus:hover{
+    background-color: green;
+  }
+</style>

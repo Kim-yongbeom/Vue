@@ -19,10 +19,12 @@ export default [
       select: UserList,
     },
     beforeEnter: (to, from, next) => {
-      console.log(store.state.name);
-      // store.state.name
-      // console.log(JSON.parse(localStorage.getItem("vuex")).name);
-      if (JSON.parse(localStorage.getItem(store.state.name)).grade === "대리") {
+      if (
+        store.state.name &&
+        (JSON.parse(localStorage.getItem(store.state.name)).grade === "대리" ||
+          JSON.parse(localStorage.getItem(store.state.name)).grade === "과장" ||
+          JSON.parse(localStorage.getItem(store.state.name)).grade === "팀장")
+      ) {
         next();
       } else {
         next("/");
