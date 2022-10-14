@@ -1,11 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import modules from "./modules/index.js";
+import user from "./modules/user";
+import destroy from "./modules/destroy";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
-  ...modules,
+  modules: {
+    user,
+    destroy,
+  },
 });

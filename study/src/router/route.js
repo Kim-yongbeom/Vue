@@ -20,10 +20,13 @@ export default [
     },
     beforeEnter: (to, from, next) => {
       if (
-        store.state.name &&
-        (JSON.parse(localStorage.getItem(store.state.name)).grade === "대리" ||
-          JSON.parse(localStorage.getItem(store.state.name)).grade === "과장" ||
-          JSON.parse(localStorage.getItem(store.state.name)).grade === "팀장")
+        store.state.user.name &&
+        (JSON.parse(localStorage.getItem(store.state.user.name)).grade ===
+          "대리" ||
+          JSON.parse(localStorage.getItem(store.state.user.name)).grade ===
+            "과장" ||
+          JSON.parse(localStorage.getItem(store.state.user.name)).grade ===
+            "팀장")
       ) {
         next();
       } else {
