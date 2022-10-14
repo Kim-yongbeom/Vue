@@ -16,7 +16,16 @@
                 inset
                 vertical
               ></v-divider>
-              <v-spacer></v-spacer>
+              <v-spacer>
+                <input
+                  class="search"
+                  type="text"
+                  v-model="search"
+                  placeholder="제목 검색"
+                  @input="searchTitle"
+                  @keydown.tab="KeydownTab"
+                />
+              </v-spacer>
               <v-dialog
                 v-model="dialog"
                 max-width="500px"
@@ -137,11 +146,16 @@
             </v-icon>
           </template>
         </v-data-table>
-        <div id="page">
+        <div id="page" v-if="!searchTrue">
           <button @click="minus(data)" class="minus">-</button>
               {{currentPage}} / {{totalPage}}
           <button @click="plus(data)" class="plus">+</button>
         </div>
+        <div id="page" v-else-if="searchTrue">
+            <button @click="minus(searchList)" class="minus">-</button>
+                {{currentPage}} / {{totalPage}}
+            <button @click="plus(searchList)" class="plus">+</button>
+          </div>
       </div>
       </template>
     <script>
@@ -172,6 +186,9 @@
           { text: localStorage.getItem('token') ? '수정/삭제' : '', value: localStorage.getItem('token') ? 'actions' : '', sortable: false },
         ],
         data: [],
+        search: '',
+        searchList: [],
+        searchTrue: false,
         editedIndex: -1,
         destroyDataAfter: '바뀐 후',
         editedItem: {
@@ -204,7 +221,7 @@
           return this.editedIndex === -1 ? '등록' : '수정'
         },
         writer(){
-          return this.$store.state.name
+          return this.$store.state.user.name
         }
       },
     
@@ -218,6 +235,28 @@
       },
     
       methods: {
+        // totalPage 보다 currentPage가 높은 상태로 검색하면 이상해짐
+        // 검색에 타이핑 할 때 마다 currentPage를 1로 보내줘야할듯
+        searchTitle () {
+            if(this.search.length !== 0){
+                clearTimeout(this.debounce);
+                this.debounce = setTimeout(()=>{
+                    this.searchTrue = true
+                    const filteredList = this.data.filter(item => item.title.includes(this.search));
+                    this.searchList = filteredList
+                    this.currentData(this.searchList)
+                    this.totalPageCount(this.searchList)
+                }, 500)
+            } else{
+                clearTimeout(this.debounce)
+                this.debounce = setTimeout(()=>{
+                    this.debounce = [];
+                    this.searchTrue = false
+                    this.currentData(this.data)
+                    this.totalPageCount(this.data)
+                }, 500)
+            }
+        },
     
         editItem (item) {
           this.editedIndex = this.data.indexOf(item)
@@ -236,6 +275,8 @@
           deleteList.splice(this.editedIndex, 1)
           localStorage.setItem(this.dataText, JSON.stringify(deleteList))
           this.data = JSON.parse(localStorage.getItem(this.dataText))
+          this.search = ''
+          this.searchTitle()
           this.totalPageCount(this.data)
           this.currentData(this.data)
           this.closeDelete()
@@ -268,18 +309,18 @@
             list.push({no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
             localStorage.setItem(this.dataText, JSON.stringify(list));
             this.data = JSON.parse(localStorage.getItem(this.dataText))
-    
+            this.search = ''
+            this.searchTitle()
             this.currentData(this.data)
-    
             this.totalPageCount(this.data)
           } else{
             let editList = JSON.parse(localStorage.getItem(this.dataText))
             editList.splice(this.editedIndex, 1, {no: this.editedItem.no, title: this.editedItem.title, name: this.editedItem.name, date: this.editedItem.date});
             localStorage.setItem(this.dataText, JSON.stringify(editList))
             this.data = JSON.parse(localStorage.getItem(this.dataText))
-    
+            this.search = ''
+            this.searchTitle()
             this.currentData(this.data)
-    
           }
           this.close()
         },
@@ -296,6 +337,13 @@
       #page{
         text-align: center;
       }
+
+      .search{
+        border: 1px solid black;
+        border-radius: 5px;
+        outline: none;
+      }
+
       .minus{
         width: 30px;
         color: white;
