@@ -96,6 +96,8 @@ methods
 - 매번 새로 호출해서 계산
 - 호출할 때마다 새롭게 계산을 해야 하는 경우 methods 사용
 ```
+
+## vue 라이프사이클
 - created
 ```
 인스턴스가 작성된 후 동기적으로 호출
@@ -103,6 +105,10 @@ methods
 그러나 마운트가 시작되지 않았으므로 $el 속성을 사용할 수 없음
 
 데이터 초기화에 대한 목적이다
+```
+-mounted
+```
+인스턴스가 마운트된 후 호출
 ```
 - beforeDestroy
 ```
@@ -136,4 +142,8 @@ action에서는 첫 번째 인자를 context 인자로 받을 수 있으며
 이 context에는 state, commit, dispatch, rootstate와 같은 속성들을 포함
 두 번째 인자는 mutation과 동일하게 payload로 받음
 action은 dispatch를 통해 호출한다.
+```
+- vuex-persistedstate
+```
+새로고침시 store의 데이터가 사라지는것을 방지해주는 라이브러리
 ```
