@@ -244,8 +244,12 @@
                     this.searchTrue = true
                     const filteredList = this.data.filter(item => item.title.includes(this.search));
                     this.searchList = filteredList
+                    if(this.currentCount > 5){
+                      this.currentCount = this.count
+                    }
                     this.currentData(this.searchList)
                     this.totalPageCount(this.searchList)
+                    this.currentPage = 1
                 }, 500)
             } else{
                 clearTimeout(this.debounce)
