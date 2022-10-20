@@ -147,3 +147,7 @@ action은 dispatch를 통해 호출한다.
 ```
 새로고침시 store의 데이터가 사라지는것을 방지해주는 라이브러리
 ```
+- vuex 흐름
+```
+actions -> mutations -> state
+```
